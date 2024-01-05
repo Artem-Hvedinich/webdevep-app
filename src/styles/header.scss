@@ -1,0 +1,25 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: $blue;
+  height: 40px;
+
+  & .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__link {
+    color: $white;
+
+    &:hover {
+      color: $gray;
+    }
+
+    &--active {
+      color: $blue-light;
+    }
+  }
+}

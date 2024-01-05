@@ -1,0 +1,90 @@
+input,
+textarea {
+  background: $white;
+  border: 1px solid $gray;
+  box-shadow: 0 3px 4px -5px rgb(24 24 28 / 3%), 0 1px 2px rgb(24 24 28 / 4%);
+  border-radius: 4px;
+  min-height: 40px;
+  padding: 0 10px;
+  width: 100%;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  resize: none;
+
+  &:focus {
+    outline: 1px solid $blue;
+    color: $blue;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    appearance: textfield;
+  }
+
+  &::placeholder {
+    user-select: none;
+    color: $gray;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+  }
+}
+
+.input-block {
+  display: grid;
+  gap: 5px;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $gray-dark;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: $gray;
+  }
+
+  &__error {
+    & > input,
+    & > textarea {
+      color: $red !important;
+
+      &:focus {
+        outline: 1px solid $red;
+        border-color: $red !important;
+      }
+    }
+
+    &--text {
+      font-size: 12px;
+      color: $red !important;
+    }
+
+    & .select__title {
+      border-color: $red;
+    }
+
+    input,
+    textarea {
+      border-color: $red !important;
+
+      &:focus {
+        border-color: $blue;
+      }
+    }
+  }
+}
