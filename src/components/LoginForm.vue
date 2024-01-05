@@ -41,12 +41,15 @@ const isValidForm = () => {
 }
 const submit = async () => {
   if (!isValidForm()) return
-  let data = {} as LoginResponseType
-  if (phone.value.length > 3) data = await userStore.login(phone.value, password.value)
-  else data = await userStore.login(email.value, password.value)
+  const data = await login()
   if (!data.ok && data.msg === "Неверный пароль") error.value.password = data.msg
   if (!data.ok && data.msg === "Пользователь не найден") {
-    let emailOrPhone = {}
+    let emailOrPhone: { email?: string, emailConfirmCode?: number, phone?: string, phoneConfirmCode: number } = {} as {
+      email?: string,
+      emailConfirmCode?: number,
+      phone?: string,
+      phoneConfirmCode: number
+    }
     if (email.value) {
       emailOrPhone["email"] = email.value
       emailOrPhone["emailConfirmCode"] = 111111
@@ -57,8 +60,15 @@ const submit = async () => {
     }
     await API.sendConfirmCode(true, emailOrPhone)
     await API.register(emailOrPhone, password.value, {})
-    await userStore.login(emailOrPhone["phone"], password.value)
+    await login()
+
   }
+}
+const login = async () => {
+  let data = {} as LoginResponseType
+  if (phone.value.length > 3) data = await userStore.login(phone.value, password.value)
+  else data = await userStore.login(email.value, password.value)
+  return data
 }
 </script>
 

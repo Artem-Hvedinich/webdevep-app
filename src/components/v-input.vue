@@ -10,7 +10,7 @@
         @blur="emit('blur')"
         @keyup.enter="emit('enter')"
         @focus="emit('focus')"
-        @input="(e) => updateValue(e.target.value)"
+        @input="updateValue"
     />
     <p v-if="error" class="input-block__error--text">{{ error }}</p>
   </div>
@@ -37,5 +37,8 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(["update-value", "blur", "focus", "enter"]);
 const {value, error, label, name} = toRefs(props);
-const updateValue = (value: any) => emit("update-value", {value, name: name.value});
+const updateValue = (e: Event) => {
+  const inputElement = e.target as HTMLInputElement;
+  emit("update-value", {value: inputElement.value, name: name.value})
+}
 </script>

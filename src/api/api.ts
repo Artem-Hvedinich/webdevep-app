@@ -10,9 +10,9 @@ export const instance = axios.create({
 
 type RegisterDataType = {
     email?: string,
-    emailConfirmCode?: string,
+    emailConfirmCode?: number,
     phone?: string,
-    phoneConfirmCode?: string,
+    phoneConfirmCode?: number,
     inn?: string,
     password: string,
     usernfo: {},
@@ -52,9 +52,9 @@ export const API = {
     register(
         emailOrPhone: {
             email?: string,
-            emailConfirmCode?: string,
+            emailConfirmCode?: number,
             phone?: string,
-            phoneConfirmCode?: string,
+            phoneConfirmCode?: number,
         },
         password: string,
         usernfo: {},
