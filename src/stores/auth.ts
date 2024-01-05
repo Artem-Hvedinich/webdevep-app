@@ -30,7 +30,6 @@ export const useAuthStore = defineStore("auth", () => {
         const refreshToken = localStorage.getItem("refreshToken");
         if (refreshToken) {
             const res = await API.logout(refreshToken)
-            console.log(res)
             if (res.data.ok) {
                 isAuth.value = false;
                 localStorage.removeItem("accessToken")
