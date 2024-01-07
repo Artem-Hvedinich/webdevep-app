@@ -16,7 +16,7 @@
     "pinia": "^2.1.7",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
-    "webdevep-lib": "^1.2.0"
+    "webdevep-lib": "^1.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",

@@ -21,5 +21,5 @@ if (accessToken) {
   userStore.loadUser(accessToken);
 }
 const loaderStore = useLoaderStore()
-loaderMiddleware(loaderStore)
+loaderMiddleware(() => loaderStore.hideLoader(), () => loaderStore.showLoader())
 </script>
