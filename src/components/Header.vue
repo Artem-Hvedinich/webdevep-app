@@ -11,6 +11,6 @@ import {useAuthStore} from "../stores/auth.ts";
 
 const userStore = useAuthStore()
 const logout = () => {
-  userStore.logout()
+  userStore.logoutUser()
 }
 </script>

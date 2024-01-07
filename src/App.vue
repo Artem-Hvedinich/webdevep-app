@@ -10,9 +10,9 @@
 import Header from "./components/Header.vue";
 import {RouterView} from 'vue-router'
 import Loader from "./components/Loader.vue";
-import {instance} from "./api/api.ts";
 import {useLoaderStore} from "./stores/loader.ts";
 import {useAuthStore} from "./stores/auth.ts";
+import {loaderMiddleware} from "webdevep-lib/dist/middleware/loaderMiddleware";
 
 const accessToken = localStorage.getItem("accessToken")
 
@@ -21,14 +21,5 @@ if (accessToken) {
   userStore.loadUser(accessToken);
 }
 const loaderStore = useLoaderStore()
-
-instance.interceptors.response.use(response => {
-  loaderStore.hideLoader()
-  return response
-})
-instance.interceptors.request.use(conf => {
-  loaderStore.showLoader()
-  return conf
-})
+loaderMiddleware(loaderStore)
 </script>
-

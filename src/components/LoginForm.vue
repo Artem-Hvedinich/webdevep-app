@@ -12,14 +12,14 @@
              @update-value="({value})=>password=value"/>
     <button class="button button--main" type="submit">Отправить</button>
   </form>
+  <p class="error">{{ errorMsg }}</p>
 </template>
 
 <script setup lang="ts">
 import VInput from "./v-input.vue";
 import {ref} from "vue";
-import {API} from "../api/api.ts";
 import {useAuthStore} from "../stores/auth.ts";
-import {LoginResponseType} from "webdevep-lib";
+import {loginOrRegister} from "webdevep-lib";
 
 const userStore = useAuthStore()
 
@@ -27,6 +27,7 @@ const email = ref<string>("")
 const phone = ref<string>("")
 const password = ref<string>("")
 const error = ref({credential: "", password: ""})
+const errorMsg = ref("")
 const isValidForm = () => {
   let isValid = true
   if (!(email.value.length > 3 || phone.value.length > 3)) {
@@ -40,35 +41,19 @@ const isValidForm = () => {
   return isValid
 }
 const submit = async () => {
+  errorMsg.value = ""
   if (!isValidForm()) return
-  const data = await login()
-  if (!data.ok && data.msg === "Неверный пароль") error.value.password = data.msg
-  if (!data.ok && data.msg === "Пользователь не найден") {
-    let emailOrPhone: { email?: string, emailConfirmCode?: number, phone?: string, phoneConfirmCode: number } = {} as {
-      email?: string,
-      emailConfirmCode?: number,
-      phone?: string,
-      phoneConfirmCode: number
-    }
-    if (email.value) {
-      emailOrPhone["email"] = email.value
-      emailOrPhone["emailConfirmCode"] = 111111
-    }
-    if (phone.value) {
-      emailOrPhone["phone"] = phone.value
-      emailOrPhone["phoneConfirmCode"] = 111111
-    }
-    await API.sendConfirmCode(true, emailOrPhone)
-    await API.register(emailOrPhone, password.value, {})
-    await login()
-
+  const data = {
+    email: email.value,
+    phone: phone.value,
+    emailConfirmCode: 111111,
+    phoneConfirmCode: 111111,
+    password: password.value
   }
-}
-const login = async () => {
-  let data = {} as LoginResponseType
-  if (phone.value.length > 3) data = await userStore.login(phone.value, password.value)
-  else data = await userStore.login(email.value, password.value)
-  return data
+  const res = await loginOrRegister(data)
+  if (res.ok && res.accessToken) await userStore.loadUser(res.accessToken)
+  else errorMsg.value = res.msg ?? ""
+
 }
 </script>
 
